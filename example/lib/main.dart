@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> {
     _taskName = '[Compressing Video]';
     final compressedVideoInfo = await _flutterVideoCompress.compressVideo(
       videoFile.path,
-      quality: VideoQuality.DefaultQuality,
+      quality: VideoQuality.HighestQuality,
       deleteOrigin: false,
     );
     _taskName = null;
@@ -77,17 +77,17 @@ class _MyAppState extends State<MyApp> {
     _startDateTime = DateTime.now();
     print('[Getting Gif File] start');
     _taskName = '[Getting Gif File]';
-    final gifFile = await _flutterVideoCompress
-        .convertVideoToGif(videoFile.path, startTime: 0, duration: 5);
-    print(
-        '[Getting Gif File] done! ${DateTime.now().difference(_startDateTime).inSeconds}s');
+//    final gifFile = await _flutterVideoCompress
+//        .convertVideoToGif(videoFile.path, startTime: 0, duration: 5);
+//    print(
+//        '[Getting Gif File] done! ${DateTime.now().difference(_startDateTime).inSeconds}s');
     _taskName = null;
 
     final videoInfo = await _flutterVideoCompress.getMediaInfo(videoFile.path);
 
     setState(() {
       _thumbnailFileImage = Image.file(thumbnailFile);
-      _gifFileImage = Image.file(gifFile);
+//      _gifFileImage = Image.file(gifFile);
       _originalVideoInfo = videoInfo;
       _compressedVideoInfo = compressedVideoInfo;
     });
@@ -131,7 +131,8 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  String _infoConvert(MediaInfo info) {
+  String _infoConvert(MediaInfo info){
+    dddddd(info);
     return 'path: ${info.path}\n'
         'duration: ${info.duration} microseconds\n'
         'size: ${info.filesize} bytes\n'
@@ -139,6 +140,12 @@ class _MyAppState extends State<MyApp> {
         'orientation: ${info.orientation}°\n'
         'compression cancelled: ${info.isCancel}\n'
         'author: ${info.author}';
+  }
+
+
+  dddddd(MediaInfo info) async{
+
+    print("${info.width} x ${info.height} - ${(await info.file.length())}");
   }
 
   List<Widget> _buildInfoPanel(String title,
